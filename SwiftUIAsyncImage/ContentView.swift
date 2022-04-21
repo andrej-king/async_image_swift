@@ -45,6 +45,7 @@ struct ContentView: View {
         
         // MARK: - 4. PHASE
         
+        /*
         AsyncImage(url: URL(string: imageURL)) { phase in
             // SUCCESS: The image successfully loaded.
             // FAILURE: The image failed to load within error.
@@ -59,7 +60,27 @@ struct ContentView: View {
             }
         }
         .padding(40)
+         */
         
+        // MARK: - 5. ANIMATION
+        
+        AsyncImage(url: URL(string: imageURL), transaction: Transaction(animation: .spring(response: 0.5, dampingFraction: 0.6, blendDuration: 0.25))) { phase in
+            switch phase {
+            case .success(let image):
+                image
+                    .imageModifier()
+                    // .transition(.move(edge: .bottom)) // move image from buttom
+                    // .transition(.slide) // slide image from left side
+                    .transition(.scale)
+            case .failure(_):
+                Image(systemName: "ant.circle.fill").iconModifier()
+            case .empty:
+                Image(systemName: "photo.circle.fill").iconModifier()
+            @unknown default:
+                ProgressView()
+            }
+        }
+        .padding(40)
     }
 }
 
@@ -68,5 +89,6 @@ struct ContentView: View {
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         ContentView()
+            .previewDevice("iPhone 13 Pro")
     }
 }

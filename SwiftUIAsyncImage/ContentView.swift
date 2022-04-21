@@ -1,10 +1,26 @@
 import SwiftUI
 
+extension Image {
+    func imageModifier() -> some View {
+        self
+            .resizable()
+            .scaledToFit()
+    }
+    
+    func iconModifier() -> some View {
+        self
+            .imageModifier()
+            .frame(maxWidth: 128)
+            .foregroundColor(.purple)
+            .opacity(0.5)
+    }
+}
+
 struct ContentView: View {
     // MARK: - PROPERTY
 
     private let imageURL: String = "https://images.unsplash.com/photo-1500916434205-0c77489c6cf7?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=987&q=80"
-    
+
     // MARK: - BODY
     
     var body: some View {
@@ -19,16 +35,9 @@ struct ContentView: View {
         // MARK: - 3. PLACEHOLDER
         
         AsyncImage(url: URL(string: imageURL)) { image in
-            image
-                .resizable()
-                .scaledToFit()
+            image.imageModifier()
         } placeholder: {
-            Image(systemName: "photo.circle.fill")
-                .resizable()
-                .scaledToFit()
-                .frame(maxWidth: 128)
-                .foregroundColor(.purple)
-                .opacity(0.5)
+            Image(systemName: "photo.circle.fill").iconModifier()
         }
         .padding(40)
         
